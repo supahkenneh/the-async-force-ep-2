@@ -3,6 +3,7 @@ const requestButton = document.getElementById("requestResourceButton");
 const input = document.getElementById('resourceId');
 const selector = document.getElementById('resourceType');
 const contentContainer = document.getElementById('contentContainer');
+const errorMessage = this + ' does not exist!';
 
 const contentDiv = document.createElement('div');
 contentDiv.id = 'bio';
@@ -33,6 +34,14 @@ requestButton.addEventListener('click', function(){
     
     getPersonInfo.addEventListener('load', function(){
       const parsedPerson = JSON.parse(this.responseText);
+
+      if (parsedPerson.detail === 'Not found'){
+        requestedFilmList.innerHTML = '';    
+        requestedAttribute.innerHTML = '';
+        requestedFilmList.innerHTML = '';
+        requestedMisc.innerHTML = '';
+        requestedName.innerHTML = 'ERROR: https://swapi.co/api/people/'+ input.value +'/ not found';
+      }
       
       const getSpecies = new XMLHttpRequest();
       getSpecies.open('GET', parsedPerson.species[0]);
@@ -55,6 +64,13 @@ requestButton.addEventListener('click', function(){
     getPlanetInfo.addEventListener('load', function() {
       const parsedPlanet = JSON.parse(this.responseText);
 
+      if (parsedPlanet.detail === 'Not found'){
+        requestedFilmList.innerHTML = '';    
+        requestedAttribute.innerHTML = '';
+        requestedFilmList.innerHTML = '';
+        requestedMisc.innerHTML = '';
+        requestedName.innerHTML = 'ERROR: https://swapi.co/api/planets/'+ input.value +'/ not found';
+      }
       
       for (let i = 0; i < parsedPlanet.films.length; i++){
         const getFilmAppearances = new XMLHttpRequest();
@@ -83,6 +99,14 @@ requestButton.addEventListener('click', function(){
 
     getStarshipInfo.addEventListener('load', function(){
       const parsedStarship = JSON.parse(this.responseText);
+
+      if (parsedStarship.detail === 'Not found'){
+        requestedFilmList.innerHTML = '';    
+        requestedAttribute.innerHTML = '';
+        requestedFilmList.innerHTML = '';
+        requestedMisc.innerHTML = '';
+        requestedName.innerHTML = 'ERROR: https://swapi.co/api/starships/'+ input.value +'/ not found';
+      }
       
       for (let i = 0 ; i < parsedStarship.films.length; i++){
         const getFilmAppearances = new XMLHttpRequest();

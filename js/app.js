@@ -24,10 +24,6 @@ const requestedFilmList = document.createElement('ul');
 requestedFilmList.id = 'appearances';
 contentDiv.appendChild(requestedFilmList);
 
-const filmHeader = document.createElement('h3');
-filmHeader.id = 'appears-in';
-requestedFilmList.appendChild(filmHeader);
-
 requestButton.addEventListener('click', function(){
   
   if (selector.value === 'people'){
@@ -68,7 +64,6 @@ requestButton.addEventListener('click', function(){
         getFilmAppearances.addEventListener('load', function(){
           const parsedFilms = JSON.parse(this.responseText);
           
-          filmHeader.innerHTML = 'Appears in: ';
           const createList = document.createElement('li');
           requestedFilmList.appendChild(createList);
           createList.innerHTML = parsedFilms.title;
@@ -88,10 +83,26 @@ requestButton.addEventListener('click', function(){
 
     getStarshipInfo.addEventListener('load', function(){
       const parsedStarship = JSON.parse(this.responseText);
+      
+      for (let i = 0 ; i < parsedStarship.films.length; i++){
+        const getFilmAppearances = new XMLHttpRequest();
+        getFilmAppearances.open('GET', parsedStarship.films[i])
+        getFilmAppearances.send();
 
-      requestedName.innerHTML = 'Name: ' + parsedStarship.name;
-      requestedAttribute.innerHTML = 'Manufacturer: ' + parsedStarship.manufacturer;
-      requestedMisc.innerHTML = 'Starship Class: ' + parsedStarship.starship_class;
+        getFilmAppearances.addEventListener('load', function(){
+          const parsedFilms = JSON.parse(this.responseText);
+          
+          const createList = document.createElement('li');
+          requestedFilmList.appendChild(createList);
+          createList.innerHTML = parsedFilms.title;
+          
+          requestedName.innerHTML = 'Name: ' + parsedStarship.name;
+          requestedAttribute.innerHTML = 'Manufacturer: ' + parsedStarship.manufacturer;
+          requestedMisc.innerHTML = 'Starship Class: ' + parsedStarship.starship_class;
+        })
+
+        }
+        requestedFilmList.innerHTML = '';
     })
   }
 });
